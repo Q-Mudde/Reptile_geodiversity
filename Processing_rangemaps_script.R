@@ -89,7 +89,7 @@ a <- TDWGoverlap(x='maura.shp', dir='subsets', tdwg=land_grid, type = "polygon")
 b <- TDWGoverlap(x ="vermiculatus.shp", dir = 'subsets', tdwg = land_grid, type = "polygon")
 c <- TDWGoverlap(x= "Natrix.shp", dir = 'subsets', tdwg = land_grid, type = "polygon")
 d <- TDWGoverlap(x='Echis.shp', dir = 'subsets', tdwg = land_grid, type = 'polygon')
-e <- TDWGoverlap(x='allturtles.shp', dir = 'subsets', land_grid = tdwg, type = 'polygon')
+e <- TDWGoverlap(x='allturtles.shp', dir = 'subsets', tdwg = land_grid, type = 'polygon')
 
 # these are data subsets to try functions on, 2 single species, 2 genera and the whole turtle dataset
 # the next thing we need is to transform the outputdfs into usefull data

@@ -1,0 +1,10 @@
+Proposal: Proposal has been written an rewritten many times now. The final version has been sent to everyone if everything
+went correctly. 
+
+Data handling: The reptile range maps can now be transferred to gridcells on a global scale. (110 x 110). I also created
+a data.frame with all gridcells and reptile species to be albe to perform analyses on. 
+Now the Geodiversity per gridcell has to be added, for this I need to wait before this data is placed on the server. 
+
+Results/figures: Some examples of reptiel rangemaps > gridcells are posted in the repository. The coloring or value scaling
+of these figures still have to be adjusted but the core code is done and personally I think the figures look fine. I also 
+compared them with figures from Roll et al. and they look the same (except my figures are based on gridcells now ofcourse). 

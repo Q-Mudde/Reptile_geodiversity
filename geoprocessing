@@ -1,0 +1,48 @@
+########################################
+######### GEODIVERISTY ASPECTS #########
+########################################
+
+#Some of the scripts of processing the geo-data are run on another server
+#First of all the elevaton data, processed on the server with this script
+#
+rawelev <- raster(file.choose())
+land_grid <- readOGR(file.choose())
+1/res(rawelev)  < - - gives 120
+elevmd110 <- aggregate(rawelev, fact = 120, fun = median)
+elevpolys <- rasterToPolygons(elevmd110, fun = function(x){x>0})
+plot(elevpolys, border = 'transparent')
+elevDF<- as.data.frame(elevpolys)
+elevDF$gridcell <- 1:nrow(elevDF) 
+elevOL <- over(elevpolys, land_grid, returnList = TRUE)
+names(elevOL) <- 1:length(elevOL)
+elevOLDF <- ldply(elevOL, .id = "gridcell")
+mergedf <- merge(elevDF, elevOLDF, by = "gridcell")
+elevmerge <- mergedf[ , c("elevation_1KMmd_GMTEDmd", "HBWID")]
+elevmerge2 <- aggregate(.~HBWID, data = elevdf, FUN = mean )
+write.csv(elevmerge2, file = "elev110df.csv",row.names=FALSE) 
+### So the aggregated elevation, aggregated at 110 is called elev110df, aggregated by mean
+### The big problem with this is that the aggregated rasterfile and the even area 110 polygons 
+### do not overlap, so everything has to be averaged out, which is very very inaccurate. 
+### because of this i'm not gonna make an "attatch to global df" function yet, because everything
+### can still change with the aggregated rasterfiles.
+#
+###########   The next code is the same but for the number of different soils in an area
+## so also the aggregateion function has to be different (using n_distinct here)
+1 / res(rawsoils) # as we want a res of 1, the aggregate factor is <- 480.0001
+soilnd110 <- aggregate(rawsoils, fact = 480.0001 , fun = n_distinct)
+soilpolys <- rasterToPolygons(soilnd110, fun = function(x){x>0})
+soilOL <- over(soilpolys, land_grid, returnList = TRUE)
+names(soilOL) <- 1:length(soilOL)
+soilOLDF <- ldply(soilOL, .id = "gridcell")
+
+
+#################
+# New thing, here I try to firt convert the rasterdata to points and then aggregate the point values to the land_grid dataframe
+# this way I dont have the same problem with the skewed overlap, costs a lot of computation though. 
+#################
+soilpoints <-  rasterToPoints(rawsoils, fun= function(x){x>0}, spatial=T)
+soilpointint <- raster::intersect(soilpoints, land_grid)
+soilpointdf <- as.data.frame(soilpointint)
+soilpointdf2 <- soilpointdf[,c("TAXNWRB_250m_ll", "HBWID")]
+soildfagg <- aggregate(.~ HBWID, data = soilpointdf2, FUN = n_distinct)
+write.csv(soildfagg, file = "soilnd110", row.names = F)

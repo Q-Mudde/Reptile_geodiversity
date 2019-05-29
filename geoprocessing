@@ -41,8 +41,12 @@ soilOLDF <- ldply(soilOL, .id = "gridcell")
 # this way I dont have the same problem with the skewed overlap, costs a lot of computation though. 
 #################
 soilpoints <-  rasterToPoints(rawsoils, fun= function(x){x>0}, spatial=T)
+# this gives an error, Error in rbind(xyv, xyvr) : negative extents to matrix, so the whole thing didnt work yet
 soilpointint <- raster::intersect(soilpoints, land_grid)
 soilpointdf <- as.data.frame(soilpointint)
 soilpointdf2 <- soilpointdf[,c("TAXNWRB_250m_ll", "HBWID")]
 soildfagg <- aggregate(.~ HBWID, data = soilpointdf2, FUN = n_distinct)
 write.csv(soildfagg, file = "soilnd110", row.names = F)
+
+
+

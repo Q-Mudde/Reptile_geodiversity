@@ -8,3 +8,8 @@ Now the Geodiversity per gridcell has to be added, for this I need to wait befor
 Results/figures: Some examples of reptiel rangemaps > gridcells are posted in the repository. The coloring or value scaling
 of these figures still have to be adjusted but the core code is done and personally I think the figures look fine. I also 
 compared them with figures from Roll et al. and they look the same (except my figures are based on gridcells now ofcourse). 
+
+(29-5) I have been trying several ways of aggregating the high res rasterdata into my 110 even area polygons. Peronally I think
+that transforming the rasterdata into points and then assigning points to the polygons they fall in, is the best way to do this
+in R. However, for now this seems to take a lot of computation time, I think because spatial points data is a lot less efficient
+in containing high res data than .tiff files. 
